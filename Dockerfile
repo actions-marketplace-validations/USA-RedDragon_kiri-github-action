@@ -1,14 +1,14 @@
 
 # Latest stable version of Ubuntu, of course
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 LABEL org.opencontainers.image.authors "Leandro Heck <leoheck@gmail.com>, Jacob McSwain <kiri-github-action@mcswain.dev>"
-LABEL org.opencontainers.image.description "Kicad 7 and KiRI"
+LABEL org.opencontainers.image.description "Kicad 9 and KiRI"
 LABEL org.opencontainers.image.url "https://github.com/USA-RedDragon/kiri-github-action/pkgs/container/kiri"
 LABEL org.opencontainers.image.documentation "https://github.com/USA-RedDragon/kiri-github-action"
 LABEL org.opencontainers.image.source "https://github.com/USA-RedDragon/kiri-github-action"
 
-ARG DEBIAN_FRONTEND noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 ARG DEBCONF_NOWARNINGS="yes"
 ENV TERM 'dumb'
 
@@ -40,7 +40,7 @@ RUN apt-get install -y \
 	rm -rf /var/tmp/*
 
 # Install latest Kicad
-RUN add-apt-repository -y ppa:kicad/kicad-7.0-releases
+RUN add-apt-repository -y ppa:kicad/kicad-9.0-releases
 RUN apt-get install --no-install-recommends -y kicad && \
 	apt-get purge -y \
 		software-properties-common ;\
@@ -65,6 +65,7 @@ ENV PATH "${PATH}:/home/github/.local/bin"
 
 # Python dependencies
 RUN yes | pip3 install \
+		--break-system-packages \
 		"pillow>8.2.0" \
 		"six>=1.15.0" \
 		"python_dateutil>=2.8.1" \
